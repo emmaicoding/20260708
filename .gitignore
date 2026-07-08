@@ -1,0 +1,18 @@
+# 编译产物
+out/
+*.class
+
+# JVM 崩溃日志
+hs_err_pid*.log
+replay_pid*.log
+
+# IDE 配置
+*.iml
+.idea/
+.vscode/
+.classpath
+.project
+.settings/
+
+# macOS
+.DS_Store
