@@ -247,16 +247,21 @@ public class InitDatabase {
                               "VALUES(?,?,?,?,?,?,?,1)";
             try (PreparedStatement psChild = conn.prepareStatement(childSql)) {
                 for (int classId = 1; classId <= 9; classId++) {
+                    // 根据班级确定出生年份：大班2020、中班2021、小班2022
+                    int birthYear;
+                    if (classId <= 3) birthYear = 2020;      // 大班（5~6岁）
+                    else if (classId <= 6) birthYear = 2021;  // 中班（4~5岁）
+                    else birthYear = 2022;                    // 小班（3~4岁）
+
                     for (int i = 0; i < 10; i++) {
                         boolean isBoy = i < 5;
                         String name = isBoy ? boyNames[boyIndex++] : girlNames[girlIndex++];
                         String gender = isBoy ? "M" : "F";
                         String parentName = name.substring(0, 3) + parentSuffix[isBoy ? 0 : 1];
                         String phone = String.format("138%08d", 10000000 + classId * 100 + i);
-                        int year = 2020 + (childId % 3);
                         int month = 1 + (childId % 12);
                         int day = 1 + (childId % 28);
-                        String birthDate = String.format("%d-%02d-%02d", year, month, day);
+                        String birthDate = String.format("%d-%02d-%02d", birthYear, month, day);
 
                         psChild.setString(1, name);
                         psChild.setString(2, gender);
@@ -272,32 +277,72 @@ public class InitDatabase {
             }
             System.out.println("  ✓ 幼儿数据已插入（90名幼儿）");
 
-            // 7. 为每个幼儿分配4门课程
-            for (int cid = 1; cid <= 90; cid++) {
-                for (int courseId = 1; courseId <= 4; courseId++) {
-                    stmt.executeUpdate(String.format(
-                        "INSERT INTO t_child_course(child_id,course_id) VALUES(%d,%d)", cid, courseId));
+            // 7. 为每个幼儿随机分配2~4门课程（体现选课差异性）
+            String ccSql = "INSERT INTO t_child_course(child_id,course_id) VALUES(?,?)";
+            try (PreparedStatement psCC = conn.prepareStatement(ccSql)) {
+                for (int cid = 1; cid <= 90; cid++) {
+                    // 根据childId确定选课数量和组合
+                    int courseCount = 2 + (cid % 3); // 2、3、4门轮替
+                    // 根据childId确定选哪些课（产生差异化分布）
+                    for (int j = 0; j < courseCount; j++) {
+                        int courseId = 1 + ((cid + j * 3) % 4); // 课程1~4交叉分配
+                        psCC.setInt(1, cid);
+                        psCC.setInt(2, courseId);
+                        psCC.executeUpdate();
+                    }
                 }
             }
-            System.out.println("  ✓ 选课数据已插入（每人4门）");
+            System.out.println("  ✓ 选课数据已插入（每人2~4门，差异化分配）");
 
-            // 8. 插入本周食谱（周一~周五，早中晚各1道菜）
+            // 8. 插入本周食谱（周一~周五，合理的早午晚餐搭配）
+            // 菜品ID：1~4主食, 5~8荤菜, 9~12素菜, 13~16汤, 17~20水果
             LocalDate monday = LocalDate.now().with(java.time.DayOfWeek.MONDAY);
-            for (int day = 1; day <= 5; day++) {
-                // 早餐：主食+水果
-                stmt.executeUpdate(String.format(
-                    "INSERT INTO t_weekly_menu(week_start,day_of_week,meal_type,dish_id) VALUES('%s',%d,1,%d)",
-                    monday, day, ((day - 1) % 4) + 1));  // 主食1~4
-                // 午餐：荤菜+素菜+汤
-                stmt.executeUpdate(String.format(
-                    "INSERT INTO t_weekly_menu(week_start,day_of_week,meal_type,dish_id) VALUES('%s',%d,2,%d)",
-                    monday, day, ((day - 1) % 4) + 5));  // 荤菜5~8
-                // 晚餐：素菜+汤
-                stmt.executeUpdate(String.format(
-                    "INSERT INTO t_weekly_menu(week_start,day_of_week,meal_type,dish_id) VALUES('%s',%d,3,%d)",
-                    monday, day, ((day - 1) % 4) + 13)); // 汤13~16
+            String menuSql = "INSERT INTO t_weekly_menu(week_start,day_of_week,meal_type,dish_id) VALUES(?,?,?,?)";
+            try (PreparedStatement psMenu = conn.prepareStatement(menuSql)) {
+                for (int day = 1; day <= 5; day++) {
+                    // 早餐：主食1道 + 水果1道
+                    psMenu.setString(1, monday.toString());
+                    psMenu.setInt(2, day);
+                    psMenu.setInt(3, 1); // 早餐
+                    psMenu.setInt(4, ((day - 1) % 4) + 1); // 主食1~4轮替
+                    psMenu.executeUpdate();
+
+                    psMenu.setInt(3, 1); // 早餐
+                    psMenu.setInt(4, ((day - 1) % 4) + 17); // 水果17~20轮替
+                    psMenu.executeUpdate();
+
+                    // 午餐：主食1道 + 荤菜1道 + 素菜1道 + 汤1道
+                    psMenu.setInt(3, 2); // 午餐
+                    psMenu.setInt(4, ((day + 1) % 4) + 1); // 主食轮替
+                    psMenu.executeUpdate();
+
+                    psMenu.setInt(3, 2);
+                    psMenu.setInt(4, ((day - 1) % 4) + 5); // 荤菜5~8轮替
+                    psMenu.executeUpdate();
+
+                    psMenu.setInt(3, 2);
+                    psMenu.setInt(4, ((day - 1) % 4) + 9); // 素菜9~12轮替
+                    psMenu.executeUpdate();
+
+                    psMenu.setInt(3, 2);
+                    psMenu.setInt(4, ((day - 1) % 4) + 13); // 汤13~16轮替
+                    psMenu.executeUpdate();
+
+                    // 晚餐：主食1道 + 素菜1道 + 汤1道
+                    psMenu.setInt(3, 3); // 晚餐
+                    psMenu.setInt(4, ((day + 2) % 4) + 1); // 主食轮替
+                    psMenu.executeUpdate();
+
+                    psMenu.setInt(3, 3);
+                    psMenu.setInt(4, ((day + 1) % 4) + 9); // 素菜轮替
+                    psMenu.executeUpdate();
+
+                    psMenu.setInt(3, 3);
+                    psMenu.setInt(4, ((day + 1) % 4) + 13); // 汤轮替
+                    psMenu.executeUpdate();
+                }
             }
-            System.out.println("  ✓ 本周食谱已插入");
+            System.out.println("  ✓ 本周食谱已插入（早餐主食+水果，午餐主食+荤菜+素菜+汤，晚餐主食+素菜+汤）");
 
             // 9. 插入最近5天考勤（模拟数据）
             LocalDate today = LocalDate.now();

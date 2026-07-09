@@ -80,12 +80,13 @@ public class InitDatabaseTest {
                 if (courseCount == 4) passed++; else failed++;
             }
 
-            // 选课记录
+            // 选课记录（每人2~4门，预期240~360之间）
             try (ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM t_child_course")) {
                 rs.next();
                 int ccCount = rs.getInt(1);
-                System.out.printf("  选课记录：%d（期望：360）%s\n", ccCount, ccCount == 360 ? "✓" : "✗");
-                if (ccCount == 360) passed++; else failed++;
+                boolean ccOk = ccCount >= 240 && ccCount <= 360;
+                System.out.printf("  选课记录：%d（期望：240~360）%s\n", ccCount, ccOk ? "✓" : "✗");
+                if (ccOk) passed++; else failed++;
             }
 
             // 用户数量
