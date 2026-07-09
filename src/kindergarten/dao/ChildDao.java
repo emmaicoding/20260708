@@ -43,7 +43,11 @@ public class ChildDao {
             ps.setDate(7, Date.valueOf(child.getEnrollmentDate()));
             ps.executeUpdate();
             rs = ps.getGeneratedKeys();
-            if (rs.next()) return rs.getInt(1);
+            if (rs.next()) {
+                int generatedId = rs.getInt(1);
+                child.setId(generatedId);
+                return generatedId;
+            }
         } catch (SQLException e) {
             throw new DataAccessException("添加幼儿失败", e);
         } finally {

@@ -54,7 +54,7 @@ public class InitDatabase {
             "CREATE TABLE IF NOT EXISTS t_user (" +
             "  id INT PRIMARY KEY AUTO_INCREMENT COMMENT '用户ID'," +
             "  username VARCHAR(30) NOT NULL UNIQUE COMMENT '用户名'," +
-            "  password VARCHAR(50) NOT NULL COMMENT '密码'," +
+            "  password VARCHAR(64) NOT NULL COMMENT '密码'," +
             "  real_name VARCHAR(30) NOT NULL COMMENT '真实姓名'," +
             "  role TINYINT NOT NULL DEFAULT 2 COMMENT '角色：1管理员 2教师'," +
             "  class_id INT DEFAULT NULL COMMENT '教师负责班级'," +

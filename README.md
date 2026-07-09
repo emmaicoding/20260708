@@ -31,7 +31,7 @@
 
 ```java
 private static final String USERNAME = "root";      // 你的MySQL用户名
-private static final String PASSWORD = "123456";     // 你的MySQL密码
+private static final String PASSWORD = "lirui520";   // 你的MySQL密码（部署时需修改）
 ```
 
 ### 3. 编译

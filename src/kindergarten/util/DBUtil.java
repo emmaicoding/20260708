@@ -23,7 +23,7 @@ public class DBUtil {
     private static final String USERNAME = "root";
 
     /** 数据库密码（部署时需根据实际环境修改） */
-    private static final String PASSWORD = "123456";
+    private static final String PASSWORD = "lirui520";
 
     /**
      * 获取基础连接（不指定数据库，用于创建数据库）
