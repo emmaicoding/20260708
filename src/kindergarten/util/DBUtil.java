@@ -23,7 +23,7 @@ public class DBUtil {
     private static final String USERNAME = "root";
 
     /** 数据库密码（部署时需根据实际环境修改） */
-    private static final String PASSWORD = "lirui520";
+    private static final String PASSWORD = "jsh061102";
 
     /**
      * 获取基础连接（不指定数据库，用于创建数据库）
@@ -80,7 +80,7 @@ public class DBUtil {
      * @return 连接成功返回true，否则返回false
      */
     public static boolean testConnection() {
-        try (Connection conn = getConnection()) {
+        try (Connection conn = getBaseConnection()) {
             return conn != null && !conn.isClosed();
         } catch (SQLException e) {
             return false;
