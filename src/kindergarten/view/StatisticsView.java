@@ -49,8 +49,9 @@ public class StatisticsView {
         System.out.println("\n══════════════════════════════════════════════════════════════");
         System.out.println("  班级人数统计");
         System.out.println("══════════════════════════════════════════════════════════════");
-        System.out.printf("  %-10s %-8s %-10s %-8s %-8s %-8s\n",
-            "班级", "年级", "当前人数", "男生", "女生", "容量");
+        System.out.printf("  %s%s%s%s%s%s\n",
+            InputUtil.padRight("班级", 14), InputUtil.padRight("年级", 10), InputUtil.padRight("当前人数", 12),
+            InputUtil.padRight("男生", 10), InputUtil.padRight("女生", 10), InputUtil.padRight("容量", 10));
         System.out.println("──────────────────────────────────────────────────────────────");
 
         for (Map<String, Object> row : stats) {
@@ -62,8 +63,13 @@ public class StatisticsView {
             totalBoys += boys;
             totalGirls += girls;
 
-            System.out.printf("  %-10s %-8s %-10d %-8d %-8d %-8d\n",
-                row.get("className"), row.get("grade"), count, boys, girls, max);
+            System.out.printf("  %s%s%s%s%s%s\n",
+                InputUtil.padRight((String) row.get("className"), 14),
+                InputUtil.padRight((String) row.get("grade"), 10),
+                InputUtil.padRight(String.valueOf(count), 12),
+                InputUtil.padRight(String.valueOf(boys), 10),
+                InputUtil.padRight(String.valueOf(girls), 10),
+                InputUtil.padRight(String.valueOf(max), 10));
         }
 
         System.out.println("──────────────────────────────────────────────────────────────");
@@ -79,13 +85,17 @@ public class StatisticsView {
         System.out.println("\n══════════════════════════════════════════════════════");
         System.out.println("  课程选课统计");
         System.out.println("══════════════════════════════════════════════════════");
-        System.out.printf("  %-12s %-10s %-10s %-10s\n", "课程名称", "已选人数", "容量上限", "选课率");
+        System.out.printf("  %s%s%s%s\n",
+            InputUtil.padRight("课程名称", 14), InputUtil.padRight("已选人数", 12),
+            InputUtil.padRight("容量上限", 12), InputUtil.padRight("选课率", 12));
         System.out.println("──────────────────────────────────────────────────────");
 
         for (Map<String, Object> row : stats) {
-            System.out.printf("  %-12s %-10d %-10d %-10s\n",
-                row.get("courseName"), row.get("currentCount"), row.get("maxCount"),
-                row.get("rate") + "%");
+            System.out.printf("  %s%s%s%s\n",
+                InputUtil.padRight((String) row.get("courseName"), 14),
+                InputUtil.padRight(String.valueOf(row.get("currentCount")), 12),
+                InputUtil.padRight(String.valueOf(row.get("maxCount")), 12),
+                InputUtil.padRight(row.get("rate") + "%", 12));
         }
         System.out.println("══════════════════════════════════════════════════════");
         InputUtil.waitForEnter();
@@ -98,13 +108,17 @@ public class StatisticsView {
         System.out.println("\n══════════════════════════════════════════════════════");
         System.out.println("  年级分布统计");
         System.out.println("══════════════════════════════════════════════════════");
-        System.out.printf("  %-10s %-12s %-10s %-12s\n", "年级", "总人数", "班级数", "班均人数");
+        System.out.printf("  %s%s%s%s\n",
+            InputUtil.padRight("年级", 14), InputUtil.padRight("总人数", 12),
+            InputUtil.padRight("班级数", 12), InputUtil.padRight("班均人数", 12));
         System.out.println("──────────────────────────────────────────────────────");
 
         for (Map<String, Object> row : stats) {
-            System.out.printf("  %-10s %-12d %-10d %-12s\n",
-                row.get("grade"), row.get("totalStudents"), row.get("classCount"),
-                row.get("avgPerClass"));
+            System.out.printf("  %s%s%s%s\n",
+                InputUtil.padRight((String) row.get("grade"), 14),
+                InputUtil.padRight(String.valueOf(row.get("totalStudents")), 12),
+                InputUtil.padRight(String.valueOf(row.get("classCount")), 12),
+                InputUtil.padRight(String.valueOf(row.get("avgPerClass")), 12));
         }
         System.out.println("══════════════════════════════════════════════════════");
         InputUtil.waitForEnter();
@@ -119,15 +133,20 @@ public class StatisticsView {
         System.out.println("\n══════════════════════════════════════════════════════════════════════");
         System.out.printf("  出勤率报表（%s ~ %s）\n", start, end);
         System.out.println("══════════════════════════════════════════════════════════════════════");
-        System.out.printf("  %-10s %-10s %-10s %-10s %-10s %-10s %-10s\n",
-            "班级", "总记录", "出勤", "缺勤", "请假", "迟到", "出勤率");
+        System.out.printf("  %s%s%s%s%s%s%s\n",
+            InputUtil.padRight("班级", 14), InputUtil.padRight("总记录", 12), InputUtil.padRight("出勤", 12),
+            InputUtil.padRight("缺勤", 12), InputUtil.padRight("请假", 12), InputUtil.padRight("迟到", 12), InputUtil.padRight("出勤率", 12));
         System.out.println("──────────────────────────────────────────────────────────────────────────");
 
         for (Map<String, Object> row : stats) {
-            System.out.printf("  %-10s %-10d %-10d %-10d %-10d %-10d %-10s\n",
-                row.get("className"), row.get("total"), row.get("present"),
-                row.get("absent"), row.get("leave"), row.get("late"),
-                row.get("rate") + "%");
+            System.out.printf("  %s%s%s%s%s%s%s\n",
+                InputUtil.padRight((String) row.get("className"), 14),
+                InputUtil.padRight(String.valueOf(row.get("total")), 12),
+                InputUtil.padRight(String.valueOf(row.get("present")), 12),
+                InputUtil.padRight(String.valueOf(row.get("absent")), 12),
+                InputUtil.padRight(String.valueOf(row.get("leave")), 12),
+                InputUtil.padRight(String.valueOf(row.get("late")), 12),
+                InputUtil.padRight(row.get("rate") + "%", 12));
         }
         System.out.println("══════════════════════════════════════════════════════════════════════");
         InputUtil.waitForEnter();

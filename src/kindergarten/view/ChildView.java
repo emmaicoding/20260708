@@ -209,7 +209,7 @@ public class ChildView {
             return;
         }
         System.out.println("  确认删除幼儿：" + child.getName() + "（" + child.getClassName() + "）");
-        System.out.println("  ⚠ 此操作将同时清除该幼儿的选课和考勤记录！");
+        System.out.println("  选课和考勤记录将保留，历史可追溯");
         if (InputUtil.readConfirm("  确认删除？")) {
             String result = childService.deleteChild(id);
             System.out.println("  " + (result.contains("成功") ? "✓" : "✗") + " " + result);
@@ -223,13 +223,19 @@ public class ChildView {
         System.out.println("\n════════════════════════════════════════════════════════════════");
         System.out.printf("  %s（共%d人）\n", title, children.size());
         System.out.println("════════════════════════════════════════════════════════════════");
-        System.out.printf("  %-6s %-10s %-6s %-14s %-12s %-10s %-15s\n",
-            "编号", "姓名", "性别", "出生日期", "班级", "家长", "联系电话");
+        System.out.printf("  %s%s%s%s%s%s%s\n",
+            InputUtil.padRight("编号", 8), InputUtil.padRight("姓名", 12), InputUtil.padRight("性别", 8),
+            InputUtil.padRight("出生日期", 16), InputUtil.padRight("班级", 14), InputUtil.padRight("家长", 12), InputUtil.padRight("联系电话", 16));
         System.out.println("──────────────────────────────────────────────────────────────────");
         for (Child c : children) {
-            System.out.printf("  %-6d %-10s %-6s %-14s %-12s %-10s %-15s\n",
-                c.getId(), c.getName(), c.getGenderName(),
-                c.getBirthDate(), c.getClassName(), c.getParentName(), c.getParentPhone());
+            System.out.printf("  %s%s%s%s%s%s%s\n",
+                InputUtil.padRight(String.valueOf(c.getId()), 8),
+                InputUtil.padRight(c.getName(), 12),
+                InputUtil.padRight(c.getGenderName(), 8),
+                InputUtil.padRight(String.valueOf(c.getBirthDate()), 16),
+                InputUtil.padRight(c.getClassName(), 14),
+                InputUtil.padRight(c.getParentName(), 12),
+                InputUtil.padRight(c.getParentPhone(), 16));
         }
         System.out.println("════════════════════════════════════════════════════════════════");
         InputUtil.waitForEnter();

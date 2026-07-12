@@ -73,13 +73,18 @@ public class TeacherView {
         System.out.println("\n══════════════════════════════════════════════════════");
         System.out.printf("  %s 幼儿名单（共%d人）\n", user.getClassName(), children.size());
         System.out.println("══════════════════════════════════════════════════════");
-        System.out.printf("  %-6s %-10s %-6s %-14s %-10s %-15s\n",
-            "编号", "姓名", "性别", "出生日期", "家长", "联系电话");
+        System.out.printf("  %s%s%s%s%s%s\n",
+            InputUtil.padRight("编号", 8), InputUtil.padRight("姓名", 12), InputUtil.padRight("性别", 8),
+            InputUtil.padRight("出生日期", 16), InputUtil.padRight("家长", 12), InputUtil.padRight("联系电话", 16));
         System.out.println("──────────────────────────────────────────────────────");
         for (Child c : children) {
-            System.out.printf("  %-6d %-10s %-6s %-14s %-10s %-15s\n",
-                c.getId(), c.getName(), c.getGenderName(),
-                c.getBirthDate(), c.getParentName(), c.getParentPhone());
+            System.out.printf("  %s%s%s%s%s%s\n",
+                InputUtil.padRight(String.valueOf(c.getId()), 8),
+                InputUtil.padRight(c.getName(), 12),
+                InputUtil.padRight(c.getGenderName(), 8),
+                InputUtil.padRight(String.valueOf(c.getBirthDate()), 16),
+                InputUtil.padRight(c.getParentName(), 12),
+                InputUtil.padRight(c.getParentPhone(), 16));
         }
         System.out.println("══════════════════════════════════════════════════════");
         InputUtil.waitForEnter();
@@ -138,13 +143,17 @@ public class TeacherView {
             return;
         }
         System.out.println("\n══════ " + user.getClassName() + " " + date + " 考勤记录 ══════");
-        System.out.printf("  %-6s %-10s %-8s %-10s\n", "编号", "姓名", "状态", "备注");
-        System.out.println("────────────────────────────────────────────");
+        System.out.printf("  %s%s%s%s\n",
+            InputUtil.padRight("编号", 8), InputUtil.padRight("姓名", 12),
+            InputUtil.padRight("状态", 10), InputUtil.padRight("备注", 12));
+        System.out.println("────────────────────────────────────────────────────");
         int present = 0, absent = 0, leave = 0, late = 0;
         for (Attendance a : records) {
-            System.out.printf("  %-6d %-10s %-8s %-10s\n",
-                a.getChildId(), a.getChildName(), a.getStatusName(),
-                a.getRemark() != null ? a.getRemark() : "");
+            System.out.printf("  %s%s%s%s\n",
+                InputUtil.padRight(String.valueOf(a.getChildId()), 8),
+                InputUtil.padRight(a.getChildName(), 12),
+                InputUtil.padRight(a.getStatusName(), 10),
+                InputUtil.padRight(a.getRemark() != null ? a.getRemark() : "", 12));
             switch (a.getStatus()) {
                 case 1: present++; break;
                 case 2: absent++; break;

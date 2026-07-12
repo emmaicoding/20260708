@@ -105,11 +105,7 @@ public class ChildService {
             if (existing.getStatus() != null && existing.getStatus() == 0) {
                 return "该幼儿已离园";
             }
-            // 级联清理选课记录
-            childCourseDao.deleteByChildId(childId);
-            // 级联清理考勤记录
-            attendanceDao.deleteByChildId(childId);
-            // 软删除幼儿
+            // 软删除幼儿（选课和考勤记录保留，历史可追溯）
             int rows = childDao.delete(childId);
             return rows > 0 ? "删除成功（" + existing.getName() + "已标记离园）" : "删除失败";
         } catch (DataAccessException e) {

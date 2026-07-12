@@ -74,13 +74,17 @@ public class AttendanceView {
         System.out.println("\n══════════════════════════════════════════════════════");
         System.out.printf("  %s %s 考勤记录\n", cls != null ? cls.getClassName() : "", date);
         System.out.println("══════════════════════════════════════════════════════");
-        System.out.printf("  %-6s %-10s %-8s %-10s\n", "幼儿ID", "姓名", "状态", "备注");
+        System.out.printf("  %s%s%s%s\n",
+            InputUtil.padRight("幼儿ID", 10), InputUtil.padRight("姓名", 12),
+            InputUtil.padRight("状态", 10), InputUtil.padRight("备注", 12));
         System.out.println("──────────────────────────────────────────────────────");
         int[] counts = new int[5];
         for (Attendance a : records) {
-            System.out.printf("  %-6d %-10s %-8s %-10s\n",
-                a.getChildId(), a.getChildName(), a.getStatusName(),
-                a.getRemark() != null ? a.getRemark() : "");
+            System.out.printf("  %s%s%s%s\n",
+                InputUtil.padRight(String.valueOf(a.getChildId()), 10),
+                InputUtil.padRight(a.getChildName(), 12),
+                InputUtil.padRight(a.getStatusName(), 10),
+                InputUtil.padRight(a.getRemark() != null ? a.getRemark() : "", 12));
             counts[a.getStatus()]++;
         }
         System.out.println("──────────────────────────────────────────────────────");
@@ -110,12 +114,14 @@ public class AttendanceView {
         System.out.printf("  %s（%s）考勤记录 %s ~ %s\n",
             child.getName(), child.getClassName(), start, end);
         System.out.println("══════════════════════════════════════════════════════");
-        System.out.printf("  %-14s %-8s %-10s\n", "日期", "状态", "备注");
+        System.out.printf("  %s%s%s\n",
+            InputUtil.padRight("日期", 16), InputUtil.padRight("状态", 10), InputUtil.padRight("备注", 12));
         System.out.println("──────────────────────────────────────────────────────");
         for (Attendance a : records) {
-            System.out.printf("  %-14s %-8s %-10s\n",
-                a.getAttendDate(), a.getStatusName(),
-                a.getRemark() != null ? a.getRemark() : "");
+            System.out.printf("  %s%s%s\n",
+                InputUtil.padRight(String.valueOf(a.getAttendDate()), 16),
+                InputUtil.padRight(a.getStatusName(), 10),
+                InputUtil.padRight(a.getRemark() != null ? a.getRemark() : "", 12));
         }
         System.out.println("══════════════════════════════════════════════════════");
         InputUtil.waitForEnter();

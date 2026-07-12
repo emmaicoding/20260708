@@ -58,12 +58,17 @@ public class CourseView {
         System.out.println("\n══════════════════════════════════════════════════════");
         System.out.println("  所有课程");
         System.out.println("══════════════════════════════════════════════════════");
-        System.out.printf("  %-6s %-12s %-12s %-12s %s\n", "编号", "课程名称", "已选人数", "容量上限", "课程描述");
+        System.out.printf("  %s%s%s%s%s\n",
+            InputUtil.padRight("编号", 8), InputUtil.padRight("课程名称", 14), InputUtil.padRight("已选人数", 12),
+            InputUtil.padRight("容量上限", 12), InputUtil.padRight("课程描述", 20));
         System.out.println("──────────────────────────────────────────────────────");
         for (Course c : courses) {
-            System.out.printf("  %-6d %-12s %-12d %-12d %s\n",
-                c.getId(), c.getCourseName(), c.getCurrentCount(), c.getMaxCount(),
-                c.getDescription() != null ? c.getDescription() : "");
+            System.out.printf("  %s%s%s%s%s\n",
+                InputUtil.padRight(String.valueOf(c.getId()), 8),
+                InputUtil.padRight(c.getCourseName(), 14),
+                InputUtil.padRight(String.valueOf(c.getCurrentCount()), 12),
+                InputUtil.padRight(String.valueOf(c.getMaxCount()), 12),
+                InputUtil.padRight(c.getDescription() != null ? c.getDescription() : "", 20));
         }
         System.out.println("══════════════════════════════════════════════════════");
         InputUtil.waitForEnter();
@@ -191,10 +196,12 @@ public class CourseView {
         System.out.printf("  「%s」学员名单（共%d人）\n",
             course != null ? course.getCourseName() : "", students.size());
         System.out.println("══════════════════════════════════════════════════════");
-        System.out.printf("  %-6s %-10s\n", "幼儿ID", "姓名");
+        System.out.printf("  %s%s\n", InputUtil.padRight("幼儿ID", 10), InputUtil.padRight("姓名", 12));
         System.out.println("──────────────────────────────────────────────────────");
         for (ChildCourse cc : students) {
-            System.out.printf("  %-6d %-10s\n", cc.getChildId(), cc.getChildName());
+            System.out.printf("  %s%s\n",
+                InputUtil.padRight(String.valueOf(cc.getChildId()), 10),
+                InputUtil.padRight(cc.getChildName(), 12));
         }
         System.out.println("══════════════════════════════════════════════════════");
         InputUtil.waitForEnter();

@@ -168,4 +168,23 @@ public class InputUtil {
     public static Scanner getScanner() {
         return scanner;
     }
+
+    /**
+     * 中文友好的右填充对齐
+     *
+     * @param s     原始字符串
+     * @param width 目标显示宽度（中文占2列，英文/数字占1列）
+     * @return 填充后的字符串
+     */
+    public static String padRight(String s, int width) {
+        int displayWidth = 0;
+        for (char c : s.toCharArray()) {
+            displayWidth += Character.toString(c).getBytes(java.nio.charset.StandardCharsets.UTF_8).length > 1 ? 2 : 1;
+        }
+        int padding = width - displayWidth;
+        if (padding <= 0) return s;
+        StringBuilder sb = new StringBuilder(s);
+        for (int i = 0; i < padding; i++) sb.append(' ');
+        return sb.toString();
+    }
 }

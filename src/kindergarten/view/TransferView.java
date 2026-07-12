@@ -111,14 +111,19 @@ public class TransferView {
         System.out.println("\n══════════════════════════════════════════════════════════════════════");
         System.out.printf("  %s（共%d条）\n", title, logs.size());
         System.out.println("══════════════════════════════════════════════════════════════════════");
-        System.out.printf("  %-6s %-10s %-10s %-10s %-10s %-20s %s\n",
-            "编号", "幼儿", "原班级", "新班级", "操作人", "时间", "备注");
+        System.out.printf("  %s%s%s%s%s%s%s\n",
+            InputUtil.padRight("编号", 8), InputUtil.padRight("幼儿", 12), InputUtil.padRight("原班级", 12),
+            InputUtil.padRight("新班级", 12), InputUtil.padRight("操作人", 12), InputUtil.padRight("时间", 22), InputUtil.padRight("备注", 12));
         System.out.println("──────────────────────────────────────────────────────────────────────────");
         for (TransferLog tl : logs) {
-            System.out.printf("  %-6d %-10s %-10s %-10s %-10s %-20s %s\n",
-                tl.getId(), tl.getChildName(), tl.getOldClassName(), tl.getNewClassName(),
-                tl.getOperatorName(), tl.getTransferDate(),
-                tl.getRemark() != null ? tl.getRemark() : "");
+            System.out.printf("  %s%s%s%s%s%s%s\n",
+                InputUtil.padRight(String.valueOf(tl.getId()), 8),
+                InputUtil.padRight(tl.getChildName(), 12),
+                InputUtil.padRight(tl.getOldClassName(), 12),
+                InputUtil.padRight(tl.getNewClassName(), 12),
+                InputUtil.padRight(tl.getOperatorName(), 12),
+                InputUtil.padRight(String.valueOf(tl.getTransferDate()), 22),
+                InputUtil.padRight(tl.getRemark() != null ? tl.getRemark() : "", 12));
         }
         System.out.println("══════════════════════════════════════════════════════════════════════");
         InputUtil.waitForEnter();
